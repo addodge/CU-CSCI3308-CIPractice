@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <check.h>
+#include <stdio.h>
 
 #include "geometry.h"
 
@@ -145,6 +146,24 @@ START_TEST(test_2d_midpoint)
 }
 END_TEST
 
+/* coord_2d_area_triangle Test*/
+START_TEST(test_2d_area_triangle)
+{
+    coord_2d_t a, b, c;
+    a.x = 0;
+    a.y = 0;
+    b.x = 0;
+    b.y = 0;
+    c.x = 0;
+    c.y = 0;
+    ck_assert(coord_2d_area_triangle(&a, &b, &c) == 0.0);
+
+    b.y = 3;
+    c.x = 4;
+    ck_assert(coord_2d_area_triangle(&a, &b, &c) == 6.0);
+}
+END_TEST
+    
 /* coord_2d Test Suite */
 Suite* coord_2d_suite(void)
 {
@@ -161,11 +180,15 @@ Suite* coord_2d_suite(void)
 
     TCase* tc_2d_midpoint = tcase_create("coord_2d_midpoint");
     tcase_add_test(tc_2d_midpoint, test_2d_midpoint);
+    
+    TCase* tc_2d_area = tcase_create("coord_2d_area_triangle");
+    tcase_add_test(tc_2d_area, test_2d_area_triangle);
 
     /* Add Cases to Suite */
     suite_add_tcase(s, tc_2d_eq);
     suite_add_tcase(s, tc_2d_dist);
     suite_add_tcase(s, tc_2d_midpoint);
+    suite_add_tcase(s, tc_2d_area);
 
     /* Return Suite */
     return s;
@@ -174,7 +197,7 @@ Suite* coord_2d_suite(void)
 
 /* main: run test suites and set exit status */
 int main(void){
-
+    
     int failed = 0;
     Suite* s = coord_2d_suite();
     SRunner* sr = srunner_create(s);
